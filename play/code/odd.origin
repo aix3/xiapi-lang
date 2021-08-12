@@ -1,0 +1,15 @@
+# 参考逻辑
+
+n = 9;
+
+while n > 0 {
+
+  if (n % 2 == 0) {
+    print n + " -> even";
+  }
+  else {
+    print n + " -> odd";
+  }
+
+  n = n - 1;
+}

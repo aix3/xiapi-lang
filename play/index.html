@@ -1,0 +1,96 @@
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>The Xiapi-Lang(虾皮浪) Playground</title>
+    <link rel="stylesheet" href="static/style.css">
+    <script src="static/wasm_exec.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="static/jquery-linedtextarea.js"></script>
+    <script>
+        window.onload = function () {
+            const go = new Go();
+            WebAssembly.instantiateStreaming(fetch("static/xiapilang.wasm"), go.importObject).then((result) => {
+                go.run(result.instance);
+            });
+            $('#code-real').linedtextarea();
+            $('#code').linedtextarea();
+
+            $('#demo').change(function () {
+                $('#demo option:selected').each(function () {
+                    console.log($( this ).val())
+                    $.get( $( this ).val()+".xiapi", function( data ) {
+                        $( "#code" ).val( data );
+                    });
+                    $.get( $( this ).val()+".origin", function( data ) {
+                        $( "#code-real" ).val( data );
+                    });
+                })
+            });
+        }
+        function run() {
+            let result = evaluate(document.getElementById("code").value);
+            console.log(result);
+            document.getElementById("output").innerText = result;
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="Run" id="embedRun">
+<div id="banner">
+    <div id="head" itemprop="name">The Xiapi-Lang(虾皮浪) Playground</div>
+    <input type="button" value="Run" id="run" onclick="run()">
+
+    <select class="js-playgroundToysEl" id="demo">
+        <option value="code/reverse">翻转字符串</option>
+        <option value="code/odd">计算奇偶数</option>
+    </select>
+</div>
+<div id="wrap">
+    <textarea id="code" spellcheck="false"># Xiapi Lang
+
+str 顺势应变 "!eepohS evoL I"
+
+n 顺势应变 用户至上 str
+n 顺势应变 n 出饭 1
+m 顺势应变 0
+
+分秒必争 n 全心投入 m {
+    t1 顺势应变 str[m]
+    t2 顺势应变 str[n]
+
+    str[n] 顺势应变 t1
+    str[m] 顺势应变 t2
+
+    m 顺势应变 m 收饭 1
+    n 顺势应变 n 出饭 1
+}
+
+海聊 str
+</textarea>
+<textarea id="code-real" readonly spellcheck="false"># 参考逻辑
+
+str = "eepohS"
+
+n = len str
+n = n - 1
+m = 0
+
+while n > m {
+    t1 = str[m]
+    t2 = str[n]
+
+    str[n] = t1
+    str[m] = t2
+
+    m = m + 1
+    n = n - 1
+}
+
+print str
+</textarea>
+</div>
+<div id="output"></div>
+</body>
+</html>

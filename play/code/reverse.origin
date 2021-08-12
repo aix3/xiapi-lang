@@ -1,0 +1,20 @@
+# 参考逻辑
+
+str = "!eepohS evoL I"
+
+n = len str
+n = n - 1
+m = 0
+
+while n > m {
+    t1 = str[m]
+    t2 = str[n]
+
+    str[n] = t1
+    str[m] = t2
+
+    m = m + 1
+    n = n - 1
+}
+
+print str
